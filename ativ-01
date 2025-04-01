@@ -1,0 +1,60 @@
+// Buscar a(s) posições do registro onde se encontram os itens da coluna ProNom.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LINHA 100  
+
+int main () {
+    FILE *arq;
+    char linha[MAX_LINHA];
+    char *coluna;
+    int pos_coluna_prnom = -1;  
+    int numero_coluna = 0;      
+    int linha_atual = 1;        
+
+    arq = fopen("c:\\Users\\05110281050\\Desktop\\output\\superFW_Jan.csv", "r+");
+    if (arq == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 0;
+    }
+
+    if (fgets(linha, sizeof(linha), arq) != NULL) {
+        coluna = strtok(linha, ";");  
+        numero_coluna = 0;  
+
+        while (coluna != NULL) {
+            if (strcmp(coluna, "ProNom") == 0) {  
+                pos_coluna_prnom = numero_coluna;
+                break;
+            }
+            numero_coluna++;
+            coluna = strtok(NULL, ";");
+        }
+    }
+
+    if (pos_coluna_prnom == -1) {
+        printf("Coluna 'ProNom' não encontrada.\n");
+        fclose(arq);
+        return 0;
+    }
+    
+    while (fgets(linha, sizeof(linha), arq) != NULL) {
+        coluna = strtok(linha, ";");
+        numero_coluna = 0;
+
+        while (coluna != NULL) {
+            if (numero_coluna == pos_coluna_prnom) { 
+                printf("ProNom encontrado na linha %d: %s\n", linha_atual, coluna); 
+                break;
+            }
+            numero_coluna++;
+            coluna = strtok(NULL, ";"); 
+        }
+
+        linha_atual++; 
+    }
+
+    fclose(arq);
+    return 0;
+}
