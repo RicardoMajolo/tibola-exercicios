@@ -1,0 +1,41 @@
+/* Criar um programa em C que peça para o usuário as seguintes informações:
+- nome
+- CPF
+- telefone
+- idade
+Então grave as informações em um arquivo texto com a extensão ".csv" no seguinte formato:
+Leandro Tibola;123.456.789-00;55 9.9999-5332;18 */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main () {
+    char nome[50], cpf[12], numero[12];
+    int idade;
+    FILE *arquivo = fopen("informacoes.csv", "a");
+
+    if (arquivo == NULL){
+        printf ("Erro ao abrir o arquivo !");
+        return 1;
+    }
+
+    printf ("Informe seu nome : ");
+    fgets (nome, sizeof(nome), stdin);
+
+    printf ("Informe seu cpf : ");
+    fgets (cpf, sizeof(cpf), stdin);
+
+    printf ("Informe seu numero : ");
+    fgets (numero, sizeof(numero), stdin);
+
+    printf ("Informe sua idade : ");
+    scanf ("%i", &idade);
+
+    nome[strcspn(nome, "\n")] = 0;
+    cpf[strcspn(cpf, "\n")] = 0;
+    numero[strcspn(numero, "\n")] = 0;
+
+    fprintf (arquivo, "%s;%s;%s;%d;", nome, cpf, numero, idade);
+    fclose(arquivo);
+    return 0;    
+}
